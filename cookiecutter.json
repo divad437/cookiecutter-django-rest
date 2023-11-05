@@ -19,7 +19,6 @@
   "editor": ["None", "PyCharm", "VS Code"],
   "use_docker": "n",
   "postgresql_version": ["15", "14", "13", "12", "11", "10"],
-  "cloud_provider": ["AWS", "GCP", "Azure", "None"],
   "mail_service": [
     "Mailgun",
     "Amazon SES",
@@ -32,12 +31,9 @@
     "Other SMTP"
   ],
   "use_async": "n",
-  "use_drf": "n",
-  "frontend_pipeline": ["None", "Django Compressor", "Gulp", "Webpack"],
   "use_celery": "n",
   "use_mailpit": "n",
   "use_sentry": "n",
-  "use_whitenoise": "n",
   "use_heroku": "n",
   "ci_tool": ["None", "Travis", "Gitlab", "Github", "Drone"],
   "keep_local_envs_in_vcs": "y",
