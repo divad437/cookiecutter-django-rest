@@ -100,38 +100,6 @@ def remove_heroku_files():
     shutil.rmtree("bin")
 
 
-def remove_sass_files():
-    shutil.rmtree(os.path.join("{{cookiecutter.project_slug}}", "static", "sass"))
-
-
-def remove_gulp_files():
-    file_names = ["gulpfile.js"]
-    for file_name in file_names:
-        os.remove(file_name)
-
-
-def remove_webpack_files():
-    shutil.rmtree("webpack")
-    remove_vendors_js()
-
-
-def remove_vendors_js():
-    vendors_js_path = os.path.join(
-        "{{ cookiecutter.project_slug }}",
-        "static",
-        "js",
-        "vendors.js",
-    )
-    if os.path.exists(vendors_js_path):
-        os.remove(vendors_js_path)
-
-
-def remove_packagejson_file():
-    file_names = ["package.json"]
-    for file_name in file_names:
-        os.remove(file_name)
-
-
 def update_package_json(remove_dev_deps=None, remove_keys=None, scripts=None):
     remove_dev_deps = remove_dev_deps or []
     remove_keys = remove_keys or []
@@ -146,84 +114,6 @@ def update_package_json(remove_dev_deps=None, remove_keys=None, scripts=None):
     with open("package.json", mode="w") as fd:
         json.dump(content, fd, ensure_ascii=False, indent=2)
         fd.write("\n")
-
-
-def handle_js_runner(choice, use_docker, use_async):
-    if choice == "Gulp":
-        update_package_json(
-            remove_dev_deps=[
-                "@babel/core",
-                "@babel/preset-env",
-                "babel-loader",
-                "concurrently",
-                "css-loader",
-                "mini-css-extract-plugin",
-                "postcss-loader",
-                "postcss-preset-env",
-                "sass-loader",
-                "webpack",
-                "webpack-bundle-tracker",
-                "webpack-cli",
-                "webpack-dev-server",
-                "webpack-merge",
-            ],
-            remove_keys=["babel"],
-            scripts={
-                "dev": "gulp",
-                "build": "gulp generate-assets",
-            },
-        )
-        remove_webpack_files()
-    elif choice == "Webpack":
-        scripts = {
-            "dev": "webpack serve --config webpack/dev.config.js",
-            "build": "webpack --config webpack/prod.config.js",
-        }
-        remove_dev_deps = [
-            "browser-sync",
-            "cssnano",
-            "gulp",
-            "gulp-concat",
-            "gulp-imagemin",
-            "gulp-plumber",
-            "gulp-postcss",
-            "gulp-rename",
-            "gulp-sass",
-            "gulp-uglify-es",
-        ]
-        if not use_docker:
-            dev_django_cmd = (
-                "uvicorn config.asgi:application --reload" if use_async else "python manage.py runserver_plus"
-            )
-            scripts.update(
-                {
-                    "dev": "concurrently npm:dev:*",
-                    "dev:webpack": "webpack serve --config webpack/dev.config.js",
-                    "dev:django": dev_django_cmd,
-                }
-            )
-        else:
-            remove_dev_deps.append("concurrently")
-        update_package_json(remove_dev_deps=remove_dev_deps, scripts=scripts)
-        remove_gulp_files()
-
-
-def remove_prettier_pre_commit():
-    with open(".pre-commit-config.yaml", "r") as fd:
-        content = fd.readlines()
-
-    removing = False
-    new_lines = []
-    for line in content:
-        if removing and "- repo:" in line:
-            removing = False
-        if "mirrors-prettier" in line:
-            removing = True
-        if not removing:
-            new_lines.append(line)
-
-    with open(".pre-commit-config.yaml", "w") as fd:
-        fd.writelines(new_lines)
 
 
 def remove_celery_files():
@@ -413,10 +303,6 @@ def remove_celery_compose_dirs():
     shutil.rmtree(os.path.join("compose", "production", "django", "celery"))
 
 
-def remove_node_dockerfile():
-    shutil.rmtree(os.path.join("compose", "local", "node"))
-
-
 def remove_aws_dockerfile():
     shutil.rmtree(os.path.join("compose", "production", "aws"))
 
@@ -479,21 +365,6 @@ def main():
         if "{{ cookiecutter.keep_local_envs_in_vcs }}".lower() == "y":
             append_to_gitignore_file("!.envs/.local/")
 
-    if "{{ cookiecutter.frontend_pipeline }}" in ["None", "Django Compressor"]:
-        remove_gulp_files()
-        remove_webpack_files()
-        remove_sass_files()
-        remove_packagejson_file()
-        remove_prettier_pre_commit()
-        if "{{ cookiecutter.use_docker }}".lower() == "y":
-            remove_node_dockerfile()
-    else:
-        handle_js_runner(
-            "{{ cookiecutter.frontend_pipeline }}",
-            use_docker=("{{ cookiecutter.use_docker }}".lower() == "y"),
-            use_async=("{{ cookiecutter.use_async }}".lower() == "y"),
-        )
-
     if "{{ cookiecutter.cloud_provider }}" == "None" and "{{ cookiecutter.use_docker }}".lower() == "n":
         print(
             WARNING + "You chose to not use any cloud providers nor Docker, "
@@ -517,9 +388,6 @@ def main():
 
     if "{{ cookiecutter.ci_tool }}" != "Drone":
         remove_dotdrone_file()
-
-    if "{{ cookiecutter.use_drf }}".lower() == "n":
-        remove_drf_starter_files()
 
     if "{{ cookiecutter.use_async }}".lower() == "n":
         remove_async_files()

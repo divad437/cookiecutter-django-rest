@@ -36,6 +36,8 @@
   "use_mailpit": "n",
   "use_sentry": "n",
   "use_heroku": "n",
+  "use_simplejwt": "y",
+  "use_djoser": "n",
   "ci_tool": ["None", "Travis", "Gitlab", "Github", "Drone"],
   "keep_local_envs_in_vcs": "y",
   "debug": "n"
