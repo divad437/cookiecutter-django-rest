@@ -12,7 +12,7 @@ from {{ cookiecutter.project_slug }}.users.views import UserViewSet
 
 router = DefaultRouter()
 
-router.register("users", UserViewSet)
+router.register("users", UserViewSet, basename="users")
 
 
 app_name = "api"
@@ -29,4 +29,6 @@ urlpatterns = [
 {%- endif %}
 ]
 
+{%- if cookiecutter.use_djoser == 'y' %}
 urlpatterns += router.urls
+{%- endif %}
