@@ -3,21 +3,21 @@ from django.urls import resolve, reverse
 from {{ cookiecutter.project_slug }}.users.models import User
 
 
-def test_detail(user: User):
+def test_user_detail(user: User):
     {%- if cookiecutter.username_type == "email" %}
-    assert reverse("users:detail", kwargs={"pk": user.pk}) == f"/users/{user.pk}/"
-    assert resolve(f"/users/{user.pk}/").view_name == "users:detail"
+    assert reverse("api:user-detail", kwargs={"pk": user.pk}) == f"/api/users/{user.pk}/"
+    assert resolve(f"/api/users/{user.pk}/").view_name == "api:user-detail"
     {%- else %}
-    assert reverse("users:detail", kwargs={"username": user.username}) == f"/users/{user.username}/"
-    assert resolve(f"/users/{user.username}/").view_name == "users:detail"
+    assert reverse("api:user-detail", kwargs={"username": user.username}) == f"/api/users/{user.username}/"
+    assert resolve(f"/api/users/{user.username}/").view_name == "api:user-detail"
     {%- endif %}
 
 
-def test_update():
-    assert reverse("users:update") == "/users/~update/"
-    assert resolve("/users/~update/").view_name == "users:update"
+def test_user_list():
+    assert reverse("api:user-list") == "/api/users/"
+    assert resolve("/api/users/").view_name == "api:user-list"
 
 
-def test_redirect():
-    assert reverse("users:redirect") == "/users/~redirect/"
-    assert resolve("/users/~redirect/").view_name == "users:redirect"
+def test_user_me():
+    assert reverse("api:user-me") == "/api/users/me/"
+    assert resolve("/api/users/me/").view_name == "api:user-me"

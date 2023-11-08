@@ -34,11 +34,5 @@ TEMPLATES[0]["OPTIONS"]["debug"] = True  # type: ignore # noqa: F405
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = 'http://media.testserver'
 
-{%- if cookiecutter.frontend_pipeline == 'Webpack' %}
-# django-webpack-loader
-# ------------------------------------------------------------------------------
-WEBPACK_LOADER["DEFAULT"]["LOADER_CLASS"] = "webpack_loader.loader.FakeWebpackLoader"  # noqa: F405
-
-{%- endif %}
 # Your stuff...
 # ------------------------------------------------------------------------------
