@@ -62,3 +62,7 @@ if "{{ cookiecutter.use_docker }}".lower() == "n":
 if "{{ cookiecutter.mail_service }}" == "Amazon SES" and "{{ cookiecutter.cloud_provider }}" != "AWS":
     print("You should either use AWS or select a different " "Mail Service for sending emails.")
     sys.exit(1)
+
+if "{{ cookiecutter.use_djoser }}" == "y" and "{{ cookiecutter.use_simplejwt }}" == "n":
+    print("You must use simplejwt if you want to use djoser.")
+    sys.exit(1)
