@@ -1,7 +1,6 @@
-from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
-from django.contrib.auth import get_user_model, decorators
+from django.contrib.auth import get_user_model
 from django.contrib.auth import forms as admin_forms
 {%- if cookiecutter.username_type == "email" %}
 from django.forms import EmailField

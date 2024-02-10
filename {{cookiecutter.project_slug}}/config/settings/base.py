@@ -4,6 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # {{ cookiecutter.project_slug }}/
@@ -303,7 +304,6 @@ SPECTACULAR_SETTINGS = {
 # Your stuff...
 # ------------------------------------------------------------------------------
 {%- if cookiecutter.use_simplejwt %}
-from datetime import timedelta
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
