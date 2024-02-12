@@ -26,7 +26,7 @@ class TestUserViewSet:
 
         view.request = request
 
-        response = view.me(request)  # type: ignore
+        response = view.me(request)
 
         assert response.data == {
             {%- if cookiecutter.username_type == "email" %}
