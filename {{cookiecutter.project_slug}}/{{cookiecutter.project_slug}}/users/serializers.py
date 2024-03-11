@@ -11,15 +11,8 @@ class UserSerializer(serializers.ModelSerializer[UserType]):
     class Meta:
         model = User
         {%- if cookiecutter.username_type == "email" %}
-        fields = ["name", "url"]
-
-        extra_kwargs = {
-            "url": {"view_name": "api:user-detail", "lookup_field": "pk"},
-        }
+        fields = ["name", "email"]
         {%- else %}
-        fields = ["username", "name", "url"]
+        fields = ["username", "name"]
 
-        extra_kwargs = {
-            "url": {"view_name": "api:user-detail", "lookup_field": "username"},
-        }
         {%- endif %}

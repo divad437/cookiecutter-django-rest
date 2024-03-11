@@ -17,14 +17,13 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="api-schema"),
         name="api-docs",
     ),
-{%- if cookiecutter.use_djoser == 'y' %}
+{%- if cookiecutter.use_djoser == 'y' and cookiecutter.use_simplejwt == 'n' %}
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
-{%- else %}
-{%- if cookiecutter.use_simplejwt == 'y' and cookiecutter.use_djoser == 'y' %}
+{%- endif %}
+{%- if cookiecutter.use_simplejwt == 'y' %}
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-{%- endif %}
 {%- endif %}
     path("api/users/", include("{{ cookiecutter.project_slug }}.users.urls")),
 ]

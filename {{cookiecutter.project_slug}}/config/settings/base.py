@@ -77,7 +77,6 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles"
-    # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
 ]
 THIRD_PARTY_APPS = [
@@ -347,8 +346,7 @@ SIMPLE_JWT = {
 }
 {%- endif %}
 
-{%- if cookiecutter.use_djoser %}
-
+{%- if cookiecutter.use_djoser == 'y' %}
 # Djoser
 # ------------------------------------------------------------------------------
 DJOSER = {
