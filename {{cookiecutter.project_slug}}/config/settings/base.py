@@ -5,6 +5,10 @@ from pathlib import Path
 
 import environ
 
+{%- if cookiecutter.use_simplejwt == 'y' %}
+from datetime import timedelta
+{%- endif %}
+
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # {{ cookiecutter.project_slug }}/
 APPS_DIR = BASE_DIR / "{{ cookiecutter.project_slug }}"
@@ -72,7 +76,7 @@ DJANGO_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    # "django.contrib.humanize", # Handy template tags
+    "django.contrib.staticfiles"
     "django.contrib.admin",
 ]
 THIRD_PARTY_APPS = [
@@ -285,6 +289,9 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = "/static/"
+
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
 
@@ -299,9 +306,8 @@ SPECTACULAR_SETTINGS = {
 # Your stuff...
 # ------------------------------------------------------------------------------
 {%- if cookiecutter.use_simplejwt %}
-from datetime import timedelta
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
@@ -340,8 +346,7 @@ SIMPLE_JWT = {
 }
 {%- endif %}
 
-{%- if cookiecutter.use_djoser %}
-
+{%- if cookiecutter.use_djoser == 'y' %}
 # Djoser
 # ------------------------------------------------------------------------------
 DJOSER = {
