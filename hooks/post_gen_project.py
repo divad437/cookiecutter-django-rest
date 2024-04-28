@@ -86,10 +86,6 @@ def remove_docker_files():
             os.remove(os.path.join(".idea", "runConfigurations", file_name))
 
 
-def remove_utility_files():
-    shutil.rmtree("utility")
-
-
 def remove_heroku_files():
     file_names = ["Procfile", "runtime.txt", "requirements.txt"]
     for file_name in file_names:
@@ -340,9 +336,7 @@ def main():
     if "{{ cookiecutter.editor }}" != "PyCharm":
         remove_pycharm_files()
 
-    if "{{ cookiecutter.use_docker }}".lower() == "y":
-        remove_utility_files()
-    else:
+    if "{{ cookiecutter.use_docker }}".lower() == "n":
         remove_docker_files()
 
     if "{{ cookiecutter.use_docker }}".lower() == "y" and "{{ cookiecutter.cloud_provider}}" != "AWS":
